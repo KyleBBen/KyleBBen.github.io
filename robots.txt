@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://kylebrbennett.com/sitemap.xml

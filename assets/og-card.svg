@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#f4f1e9"/>
+  <circle cx="1005" cy="315" r="230" fill="none" stroke="#111418" stroke-opacity=".18"/>
+  <circle cx="1005" cy="315" r="155" fill="#0759e6"/>
+  <circle cx="1085" cy="145" r="22" fill="#c8ff3d"/>
+  <text x="80" y="115" fill="#0759e6" font-family="Arial,sans-serif" font-size="24" font-weight="700" letter-spacing="4">INVENTOR · ENGINEER · CREATOR</text>
+  <text x="75" y="285" fill="#111418" font-family="Arial,sans-serif" font-size="104" font-weight="900">KYLE B. R.</text>
+  <text x="75" y="395" fill="#111418" font-family="Arial,sans-serif" font-size="104" font-weight="900">BENNETT</text>
+  <text x="80" y="500" fill="#59626d" font-family="Arial,sans-serif" font-size="32">Turning imaginary ideas into real things.</text>
+  <text x="930" y="345" fill="#fff" font-family="Arial,sans-serif" font-size="56" font-weight="900">KBRB</text>
+</svg>
