@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://kylebrbennett.com/</loc><lastmod>2026-10-04</lastmod><priority>1.0</priority></url>
-  <url><loc>https://kylebrbennett.com/about/</loc><lastmod>2026-10-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://kylebrbennett.com/projects/</loc><lastmod>2026-10-04</lastmod><priority>0.9</priority></url>
-  <url><loc>https://kylebrbennett.com/projects/focus-wallet/</loc><lastmod>2026-10-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://kylebrbennett.com/projects/roadprint/</loc><lastmod>2026-10-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://kylebrbennett.com/projects/mechanical-intelligence/</loc><lastmod>2026-10-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://kylebrbennett.com/research/</loc><lastmod>2026-10-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://kylebrbennett.com/writing/</loc><lastmod>2026-10-04</lastmod><priority>0.7</priority></url>
-  <url><loc>https://kylebrbennett.com/press/</loc><lastmod>2026-10-04</lastmod><priority>0.8</priority></url>
-  <url><loc>https://kylebrbennett.com/contact/</loc><lastmod>2026-10-04</lastmod><priority>0.6</priority></url>
+<url><loc>https://kylebrbennett.com/</loc><lastmod>2026-10-05</lastmod><priority>1.0</priority></url>
+<url><loc>https://kylebrbennett.com/about/</loc><lastmod>2026-10-05</lastmod></url>
+<url><loc>https://kylebrbennett.com/projects/</loc><lastmod>2026-10-05</lastmod></url>
+<url><loc>https://kylebrbennett.com/projects/xylem-water-meter-tester/</loc><lastmod>2026-10-05</lastmod></url>
+<url><loc>https://kylebrbennett.com/projects/focus-wallet/</loc><lastmod>2026-10-04</lastmod></url>
+<url><loc>https://kylebrbennett.com/projects/roadprint/</loc><lastmod>2026-10-04</lastmod></url>
+<url><loc>https://kylebrbennett.com/projects/mechanical-intelligence/</loc><lastmod>2026-10-04</lastmod></url>
+<url><loc>https://kylebrbennett.com/research/</loc><lastmod>2026-10-04</lastmod></url>
+<url><loc>https://kylebrbennett.com/writing/</loc><lastmod>2026-10-04</lastmod></url>
+<url><loc>https://kylebrbennett.com/press/</loc><lastmod>2026-10-04</lastmod></url>
+<url><loc>https://kylebrbennett.com/resume/</loc><lastmod>2026-10-05</lastmod></url>
+<url><loc>https://kylebrbennett.com/contact/</loc><lastmod>2026-10-04</lastmod></url>
 </urlset>
