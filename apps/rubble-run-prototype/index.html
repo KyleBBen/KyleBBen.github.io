@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+  <meta name="theme-color" content="#10131b">
+  <meta name="description" content="Survive the terrain you build in this falling-block platformer prototype.">
+  <title>Rubble Run — Concept Prototype</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%2310131b'/%3E%3Cpath d='M5 6h9v9H5zm13 0h9v9h-9zM5 19h9v8H5zm13 0h9v8h-9z' fill='%23f6c453'/%3E%3C/svg%3E">
+  <style>
+    :root{--ink:#f7f4e9;--muted:#9ca5b5;--panel:#171c27;--line:#303849;--gold:#f6c453;--hot:#ff5e5b;--cyan:#65d6d0}
+    *{box-sizing:border-box} html,body{margin:0;min-height:100%;background:#0d1017;color:var(--ink);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+    body{display:grid;place-items:center;padding:18px;background-image:radial-gradient(circle at 30% 0,#22293a 0,transparent 42%),linear-gradient(135deg,#0d1017,#10151f)}
+    main{width:min(1100px,100%);display:grid;grid-template-columns:minmax(300px,720px) minmax(240px,320px);gap:18px;align-items:start}
+    .game-shell{position:relative;border:2px solid var(--line);background:#090c12;box-shadow:0 24px 80px #0009;overflow:hidden}
+    canvas{display:block;width:100%;aspect-ratio:1/1;background:#10151f;image-rendering:pixelated}
+    .hud{position:absolute;inset:12px 12px auto;display:flex;justify-content:space-between;pointer-events:none;text-shadow:0 2px 3px #000;font-weight:800;font-size:14px}
+    .mode{color:var(--gold)} .danger{color:#ff817e}
+    .overlay{position:absolute;inset:0;display:grid;place-items:center;background:#080b11d9;padding:28px;text-align:center;backdrop-filter:blur(3px)}
+    .overlay[hidden]{display:none}.card{max-width:520px}.eyebrow{color:var(--gold);text-transform:uppercase;letter-spacing:.14em;font-size:13px}
+    h1{font:900 clamp(32px,7vw,68px)/.9 system-ui,sans-serif;letter-spacing:-.06em;margin:10px 0 16px;text-transform:uppercase}
+    .card p{color:#cbd1dc;line-height:1.55;font-size:15px}.button{border:0;background:var(--gold);color:#171208;padding:13px 22px;font:900 15px inherit;cursor:pointer;box-shadow:5px 5px 0 #8a6220;margin-top:10px}.button:active{transform:translate(3px,3px);box-shadow:2px 2px 0 #8a6220}
+    aside{background:var(--panel);border:1px solid var(--line);padding:22px;box-shadow:8px 8px 0 #080a0f}
+    aside h2{font:800 21px system-ui,sans-serif;margin:0 0 5px}aside>p{color:var(--muted);font-size:13px;line-height:1.45;margin:0 0 20px}
+    .stat{display:flex;justify-content:space-between;border-top:1px solid var(--line);padding:11px 0;font-size:14px}.stat strong{color:var(--gold)}
+    .controls{margin-top:18px;display:grid;gap:9px}.control{display:grid;grid-template-columns:92px 1fr;gap:8px;align-items:center;color:#cbd1dc;font-size:13px}.keys{display:flex;gap:4px}.key{min-width:25px;padding:5px;border:1px solid #566177;background:#0e121b;box-shadow:0 2px 0 #05070a;text-align:center;color:white}
+    .legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px;font-size:12px;color:var(--muted)}.swatch{width:11px;height:11px;display:inline-block;margin-right:4px}.build{background:#6b7bff}.you{background:var(--cyan)}.lava{background:var(--hot)}
+    .touch{display:none;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.touch-group{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}.touch button{min-height:44px;border:1px solid #4b566d;background:#1a2130;color:white;font:800 15px inherit}.touch button:active{background:#39445a}
+    .note{margin-top:18px;padding-top:15px;border-top:1px solid var(--line);font-size:11px;color:#737e92;line-height:1.5}
+    @media(max-width:800px){body{padding:8px}main{grid-template-columns:1fr;gap:10px}aside{padding:16px}.touch{display:grid}.controls{display:none}.hud{font-size:11px}aside>p,.note{display:none}}
+  </style>
+</head>
+<body>
+<main>
+  <section class="game-shell" aria-label="Rubble Run game area">
+    <canvas id="game" width="720" height="720"></canvas>
+    <div class="hud"><span id="status" class="mode">BLOCKS ACTIVE</span><span id="threat" class="danger">LAVA 0%</span></div>
+    <div class="overlay" id="overlay"><div class="card"><div class="eyebrow">Falling block × platform survival</div><h1 id="title">Rubble<br>Run</h1><p id="message">Build the only path you can escape on. Clear lines to score—but remember: every cleared row also erases your ground.</p><button class="button" id="start">START RUN</button></div></div>
+  </section>
+  <aside>
+    <h2>One arena. Two disasters.</h2>
+    <p>Blocks and runner share the same terrain. If either game fails, the entire run ends.</p>
+    <div class="stat"><span>Score</span><strong id="score">000000</strong></div>
+    <div class="stat"><span>Lines</span><strong id="lines">0</strong></div>
+    <div class="stat"><span>Height</span><strong id="height">0m</strong></div>
+    <div class="stat"><span>Best</span><strong id="best">0</strong></div>
+    <div class="controls">
+      <div class="control"><div class="keys"><span class="key">←</span><span class="key">→</span></div><span>move block</span></div>
+      <div class="control"><div class="keys"><span class="key">↑</span></div><span>rotate block</span></div>
+      <div class="control"><div class="keys"><span class="key">↓</span></div><span>soft drop</span></div>
+      <div class="control"><div class="keys"><span class="key">A</span><span class="key">D</span></div><span>run</span></div>
+      <div class="control"><div class="keys"><span class="key">W</span></div><span>jump / wall jump</span></div>
+      <div class="control"><div class="keys"><span class="key">E</span></div><span>blast nearby rubble</span></div>
+    </div>
+    <div class="touch">
+      <div class="touch-group"><button data-k="ArrowLeft">◀</button><button data-k="ArrowUp">↻</button><button data-k="ArrowRight">▶</button></div>
+      <div class="touch-group"><button data-k="KeyA">◀</button><button data-k="KeyW">▲</button><button data-k="KeyD">▶</button><button data-k="ArrowDown">▼</button><button data-k="KeyE">✦</button></div>
+    </div>
+    <div class="legend"><span><i class="swatch build"></i>rubble</span><span><i class="swatch you"></i>runner</span><span><i class="swatch lava"></i>hazard</span></div>
+    <div class="note">Experimental concept prototype. Keep this build separate from any jam submission and recreate independently if you pursue the idea.</div>
+  </aside>
+</main>
+<script>
+(()=>{
+  'use strict';
+  const C=document.querySelector('#game'),X=C.getContext('2d'),W=12,H=20,S=36,OX=144,OY=0;
+  const COLORS=['','#6b7bff','#f6c453','#d873ff','#4fd69c','#ff785a','#54b8ff','#ffdb63'];
+  const SHAPES=[[[1,1,1,1]],[[1,1],[1,1]],[[0,1,0],[1,1,1]],[[1,0],[1,0],[1,1]],[[0,1],[0,1],[1,1]],[[0,1,1],[1,1,0]],[[1,1,0],[0,1,1]]];
+  const keys={}, dust=[]; let grid,fall,runner,lava,score,lines,meters,best=+(localStorage.rubbleBest||0),playing=false,last=0,drop=0,shake=0,blastCD=0;
+  const $=s=>document.querySelector(s); $('#best').textContent=best;
+  function reset(){grid=Array.from({length:H},()=>Array(W).fill(0)); for(let x=1;x<W-1;x++)grid[H-1][x]=1; runner={x:5.35,y:H-2.7,vx:0,vy:0,w:.5,h:.72,ground:false,dead:false};lava=H+1.5;score=lines=meters=0;blastCD=0;spawn();playing=true;last=performance.now();$('#overlay').hidden=true;requestAnimationFrame(loop)}
+  function spawn(){let i=Math.floor(Math.random()*SHAPES.length);fall={shape:SHAPES[i].map(r=>r.slice()),x:Math.floor(W/2)-1,y:-2,c:i+1}; if(hit(fall,0,0)){end('THE PILE REACHED THE CEILING','The falling-block game ended the run.')}}
+  function hit(p,dx,dy,shape=p.shape){for(let y=0;y<shape.length;y++)for(let x=0;x<shape[y].length;x++)if(shape[y][x]){let gx=p.x+x+dx,gy=p.y+y+dy;if(gx<0||gx>=W||gy>=H||(gy>=0&&grid[gy][gx]))return true}return false}
+  function overlapsRunner(p){for(let y=0;y<p.shape.length;y++)for(let x=0;x<p.shape[y].length;x++)if(p.shape[y][x]){let bx=p.x+x,by=p.y+y;if(bx<runner.x+runner.w&&bx+1>runner.x&&by<runner.y+runner.h&&by+1>runner.y)return true}return false}
+  function lock(){for(let y=0;y<fall.shape.length;y++)for(let x=0;x<fall.shape[y].length;x++)if(fall.shape[y][x]){let gy=fall.y+y;if(gy>=0)grid[gy][fall.x+x]=fall.c}burst(fall.x+fall.shape[0].length/2,fall.y+fall.shape.length,'#f6c453',8);clearRows();spawn()}
+  function clearRows(){let n=0;for(let y=H-1;y>=0;y--){if(grid[y].every(Boolean)){grid.splice(y,1);grid.unshift(Array(W).fill(0));n++;y++; if(runner.y<y)runner.y++; burst(W/2,y,'#fff',22)}} if(n){lines+=n;score+=100*n*n;shake=10}}
+  function rotate(){let old=fall.shape,r=old[0].map((_,i)=>old.map(row=>row[i]).reverse());if(!hit(fall,0,0,r)){fall.shape=r;if(overlapsRunner(fall))fall.shape=old}}
+  function solidAt(x,y){if(x<0||x>=W||y>=H)return true;if(y<0)return false;return !!grid[Math.floor(y)][Math.floor(x)]}
+  function runnerPhysics(dt){let left=Boolean(keys.KeyA||keys.a),right=Boolean(keys.KeyD||keys.d);runner.vx+=(Number(right)-Number(left))*28*dt;runner.vx*=Math.pow(.0006,dt);runner.vx=Math.max(-6,Math.min(6,runner.vx));runner.vy+=22*dt;
+    moveRunner(runner.vx*dt,0);runner.ground=false;moveRunner(0,runner.vy*dt);runner.y=Math.min(runner.y,H);
+    let wallL=solidAt(runner.x-.05,runner.y+.4),wallR=solidAt(runner.x+runner.w+.05,runner.y+.4);
+    if(keys.jump&&!keys.jumpLock){if(runner.ground){runner.vy=-9.2}else if(wallL||wallR){runner.vy=-8.5;runner.vx=wallL?7:-7}keys.jumpLock=true}if(!keys.jump)keys.jumpLock=false;
+    if((keys.KeyE||keys.e)&&blastCD<=0){blast();keys.KeyE=keys.e=false}blastCD=Math.max(0,blastCD-dt);
+    meters=Math.max(meters,Math.floor((H-runner.y)*3));score+=dt*6;
+    if(runner.y+runner.h>lava||runner.y>H)end('THE RUNNER WAS LOST','The platforming game ended the run.');
+  }
+  function moveRunner(dx,dy){let steps=Math.ceil(Math.abs(dx||dy)/.08),sx=dx/steps||0,sy=dy/steps||0;for(let i=0;i<steps;i++){let nx=runner.x+sx,ny=runner.y+sy;if(rectHits(nx,ny)){if(dy>0)runner.ground=true;if(dy)runner.vy=0;else runner.vx=0;break}runner.x=nx;runner.y=ny}}
+  function rectHits(x,y){let pts=[[x,y],[x+runner.w-.01,y],[x,y+runner.h-.01],[x+runner.w-.01,y+runner.h-.01]];return pts.some(p=>solidAt(p[0],p[1]))}
+  function blast(){blastCD=2.2;let cx=Math.floor(runner.x+.25),cy=Math.floor(runner.y+.35),removed=0;for(let y=cy-1;y<=cy+1;y++)for(let x=cx-1;x<=cx+1;x++)if(y>=0&&y<H&&x>=0&&x<W&&grid[y][x]){grid[y][x]=0;removed++;burst(x+.5,y+.5,'#65d6d0',4)}score+=removed*12;shake=removed?7:0}
+  function update(dt){runnerPhysics(dt);lava-=dt*(.06+lines*.003);drop+=dt*(keys.ArrowDown?8:1);let speed=Math.max(.13,.68-lines*.025);if(drop>speed){drop=0;if(!hit(fall,0,1)){fall.y++;if(overlapsRunner(fall)){runner.dead=true;end('CRUSHED BY YOUR OWN PLAN','The block you placed became the platformer’s final obstacle.')}}else lock()} if(lava<2)end('THE FLOOR WON','The rising hazard consumed the arena.')}
+  function burst(x,y,c,n){for(let i=0;i<n;i++)dust.push({x,y,vx:(Math.random()-.5)*5,vy:(Math.random()-1)*5,t:1,c})}
+  function draw(){X.save();X.clearRect(0,0,720,720);if(shake){X.translate((Math.random()-.5)*shake,(Math.random()-.5)*shake);shake*=.82}
+    let g=X.createLinearGradient(0,0,0,720);g.addColorStop(0,'#151c2b');g.addColorStop(1,'#090c12');X.fillStyle=g;X.fillRect(0,0,720,720);
+    X.strokeStyle='#20293a';X.lineWidth=1;for(let x=0;x<=W;x++){X.beginPath();X.moveTo(OX+x*S,0);X.lineTo(OX+x*S,720);X.stroke()}for(let y=0;y<=H;y++){X.beginPath();X.moveTo(OX,OY+y*S);X.lineTo(OX+W*S,OY+y*S);X.stroke()}
+    for(let y=0;y<H;y++)for(let x=0;x<W;x++)if(grid[y][x])block(x,y,COLORS[grid[y][x]],1);
+    if(playing&&fall)for(let y=0;y<fall.shape.length;y++)for(let x=0;x<fall.shape[y].length;x++)if(fall.shape[y][x]&&fall.y+y>=0)block(fall.x+x,fall.y+y,COLORS[fall.c],.78);
+    X.fillStyle='#ff4f55';X.fillRect(OX,lava*S, W*S,Math.max(0,720-lava*S));X.fillStyle='#ffb253';for(let x=0;x<W;x+=2)X.fillRect(OX+x*S,lava*S-4-Math.sin(x+performance.now()/200)*3,S*1.4,7);
+    if(runner){let px=OX+runner.x*S,py=runner.y*S;X.fillStyle='#65d6d0';X.fillRect(px,py,runner.w*S,runner.h*S);X.fillStyle='#071017';X.fillRect(px+4,py+7,3,3);X.fillRect(px+11,py+7,3,3);if(blastCD>0){X.strokeStyle='#65d6d055';X.beginPath();X.arc(px+9,py+12,(blastCD/2.2)*28,0,Math.PI*2);X.stroke()}}
+    for(let i=dust.length-1;i>=0;i--){let p=dust[i];p.x+=p.vx*.016;p.y+=p.vy*.016;p.vy+=.15;p.t-=.025;X.globalAlpha=Math.max(0,p.t);X.fillStyle=p.c;X.fillRect(OX+p.x*S,p.y*S,4,4);if(p.t<=0)dust.splice(i,1)}X.globalAlpha=1;X.restore();
+    $('#score').textContent=Math.floor(score).toString().padStart(6,'0');$('#lines').textContent=lines;$('#height').textContent=meters+'m';$('#threat').textContent='LAVA '+Math.max(0,Math.round((H-lava)/H*100))+'%';$('#status').textContent=blastCD?'BLAST '+blastCD.toFixed(1)+'s':'BLOCKS ACTIVE';
+  }
+  function block(x,y,c,a){let px=OX+x*S,py=y*S;X.globalAlpha=a;X.fillStyle=c;X.fillRect(px+2,py+2,S-4,S-4);X.fillStyle='#ffffff24';X.fillRect(px+5,py+5,S-10,5);X.fillStyle='#00000028';X.fillRect(px+5,py+S-9,S-10,4);X.globalAlpha=1}
+  function end(t,m){if(!playing)return;playing=false;best=Math.max(best,Math.floor(score));localStorage.rubbleBest=best;$('#best').textContent=best;$('#title').innerHTML=t;$('#message').textContent=m+' Score: '+Math.floor(score)+'. Lines: '+lines+'. Height: '+meters+'m.';$('#start').textContent='RUN IT AGAIN';$('#overlay').hidden=false}
+  function loop(now){if(!playing){draw();return}let dt=Math.min(.033,(now-last)/1000);last=now;update(dt);draw();if(playing)requestAnimationFrame(loop)}
+  addEventListener('keydown',e=>{if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Space'].includes(e.code))e.preventDefault();if(!playing&&e.code==='Enter')reset();keys[e.code]=true;if(e.code==='ArrowLeft'&&!hit(fall,-1,0)){fall.x--;if(overlapsRunner(fall))fall.x++}if(e.code==='ArrowRight'&&!hit(fall,1,0)){fall.x++;if(overlapsRunner(fall))fall.x--}if(e.code==='ArrowUp')rotate();if(e.code==='Space'||e.code==='KeyW')keys.jump=true},{passive:false});
+  addEventListener('keyup',e=>{keys[e.code]=false;if(e.code==='Space'||e.code==='KeyW')keys.jump=false});
+  document.querySelectorAll('[data-k]').forEach(b=>{let code=b.dataset.k;b.addEventListener('pointerdown',e=>{e.preventDefault();keys[code]=true;if(code==='KeyW')keys.jump=true;if(code==='ArrowLeft'&&!hit(fall,-1,0))fall.x--;if(code==='ArrowRight'&&!hit(fall,1,0))fall.x++;if(code==='ArrowUp')rotate()});b.addEventListener('pointerup',()=>{keys[code]=false;if(code==='KeyW')keys.jump=false})});
+  $('#start').onclick=reset; grid=Array.from({length:H},()=>Array(W).fill(0));runner={x:5.35,y:16,vx:0,vy:0,w:.5,h:.72};lava=20.2;fall={shape:SHAPES[2],x:4,y:2,c:3};draw();
+})();
+</script>
+</body>
+</html>

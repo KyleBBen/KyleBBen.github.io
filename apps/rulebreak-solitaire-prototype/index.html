@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#080711" />
+    <meta name="description" content="Rulebreak: a fast, mutating solitaire prototype." />
+    <title>RULEBREAK // Solitaire Roguelike</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="noise" aria-hidden="true"></div>
+    <div id="flash" aria-hidden="true"></div>
+    <main id="app" class="shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="Rulebreak home">
+          <span class="brand-mark">R//</span>
+          <span>RULEBREAK</span>
+        </a>
+        <div class="run-status">
+          <span class="status-dot"></span>
+          <span id="runStatus">SYSTEM READY</span>
+        </div>
+        <button id="restartTop" class="icon-button hidden" type="button" aria-label="Restart run" title="Restart run">↻</button>
+      </header>
+
+      <section id="intro" class="intro panel">
+        <div class="eyebrow">COMPETITIVE SOLITAIRE // PROTOTYPE 01</div>
+        <h1>THE RULES<br /><span>WON’T STAY STILL.</span></h1>
+        <p class="intro-copy">
+          Chain valid cards from a live draw stack. Every five matches, reality mutates.
+          Read fast, play faster, and turn momentum into multiplier.
+        </p>
+        <div class="mutation-preview" aria-label="Possible rule mutations">
+          <div><span>02</span><strong>PRIME CIRCUIT</strong><small>Ranks add to a prime number</small></div>
+          <div><span>03</span><strong>BLACK SIGNAL</strong><small>Only black cards connect</small></div>
+          <div><span>04</span><strong>SKIP STEP</strong><small>Jump exactly two ranks</small></div>
+        </div>
+        <button id="startButton" class="primary-button" type="button">
+          <span>START RUN</span><kbd>ENTER</kbd>
+        </button>
+        <p class="microcopy">A complete run is 15 matches across 3 shifting rules.</p>
+      </section>
+
+      <section id="game" class="game hidden" aria-live="polite">
+        <div class="hud-grid">
+          <article class="stat panel score-panel">
+            <span class="label">SCORE</span>
+            <strong id="score">000000</strong>
+            <span id="scoreDelta" class="delta">+0</span>
+          </article>
+          <article class="stat panel multiplier-panel">
+            <span class="label">MOMENTUM</span>
+            <strong id="multiplier">×1.00</strong>
+            <div class="momentum-track"><i id="momentumFill"></i></div>
+          </article>
+          <article class="stat panel progress-panel">
+            <span class="label">RUN PROGRESS</span>
+            <strong><span id="matchCount">0</span><small> / 15</small></strong>
+            <div id="phasePips" class="phase-pips" aria-label="Run progress"></div>
+          </article>
+        </div>
+
+        <article id="rulePanel" class="rule-panel panel">
+          <div class="rule-index">RULE <span id="ruleIndex">01</span></div>
+          <div class="rule-copy">
+            <span id="ruleBadge" class="rule-badge">BASE PROTOCOL</span>
+            <h2 id="ruleName">NEIGHBOR LINK</h2>
+            <p id="ruleDescription">Match a card exactly one rank above or below the anchor.</p>
+          </div>
+          <div class="phase-meter">
+            <span>NEXT MUTATION</span>
+            <div><i id="phaseFill"></i></div>
+            <strong id="phaseCount">0 / 5</strong>
+          </div>
+        </article>
+
+        <section class="table" aria-label="Card table">
+          <div class="anchor-zone">
+            <span class="zone-label">ANCHOR</span>
+            <div id="anchorCard" class="card anchor-card" aria-label="Anchor card"></div>
+          </div>
+          <div class="link-line" aria-hidden="true">
+            <i></i><span id="comboText">MAKE A MATCH</span><i></i>
+          </div>
+          <div class="draw-zone">
+            <div class="draw-header">
+              <span class="zone-label">LIVE DRAW // PICK ONE</span>
+              <span id="deckCount">47 CARDS IN RESERVE</span>
+            </div>
+            <div id="choices" class="choices"></div>
+          </div>
+        </section>
+
+        <footer class="game-footer panel">
+          <div><span class="keycap">1—4</span> PLAY CARD</div>
+          <div><span class="keycap">R</span> RESTART</div>
+          <div id="hint"><span class="hint-dot"></span> Choose a neighboring rank</div>
+        </footer>
+      </section>
+
+      <section id="results" class="results panel hidden">
+        <div id="resultEyebrow" class="eyebrow">RUN COMPLETE // SYSTEM STABLE</div>
+        <h2 id="resultTitle">REALITY<br /><span>CONQUERED.</span></h2>
+        <div class="final-score">
+          <span>FINAL SCORE</span>
+          <strong id="finalScore">000000</strong>
+        </div>
+        <div class="result-stats">
+          <div><span>PEAK MOMENTUM</span><strong id="peakMultiplier">×1.00</strong></div>
+          <div><span>FAST MATCHES</span><strong id="fastMatches">0</strong></div>
+          <div><span>RANK</span><strong id="rank">C</strong></div>
+        </div>
+        <button id="restartButton" class="primary-button" type="button">
+          <span>BREAK IT AGAIN</span><kbd>R</kbd>
+        </button>
+        <p class="microcopy">The rule order reshuffles every run.</p>
+      </section>
+    </main>
+
+    <div id="mutationOverlay" class="mutation-overlay hidden" role="status" aria-live="assertive">
+      <span>PROTOCOL CORRUPTED</span>
+      <strong id="mutationName">PRIME CIRCUIT</strong>
+      <p id="mutationDescription">Ranks must add to a prime number.</p>
+    </div>
+
+    <div id="particleLayer" class="particle-layer" aria-hidden="true"></div>
+    <script type="module" src="./game.mjs"></script>
+  </body>
+</html>
