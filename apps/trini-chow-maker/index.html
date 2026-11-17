@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#133e30">
+<title>Chow Maker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,700;9..144,800;9..144,900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="game.css">
+<script type="module" src="game.js"></script>
+</head>
+<body>
+<main class="shell">
+  <header class="masthead">
+    <div class="title">
+      <span class="kicker"><span class="flag" aria-hidden="true"></span> Trinidad &amp; Tobago</span>
+      <h1>Chow Maker<span>.</span></h1>
+      <p>Grab the mango, season it, and give the bowl a shake.</p>
+    </div>
+    <div class="controls">
+      <button class="button button-light" id="camera" type="button" aria-pressed="false"><span class="camera-icon" aria-hidden="true"></span> <span id="camera-label">Use camera</span></button>
+      <button class="button button-quiet" id="restart" type="button">Restart</button>
+    </div>
+  </header>
+  <div class="layout">
+    <section class="game" aria-label="Chow Maker play area">
+      <div class="gamebar"><span class="game-title">The chow counter</span><span class="mode" id="mode">TOUCH / MOUSE</span></div>
+      <div id="stage" class="stage">
+        <video id="video" playsinline muted hidden></video>
+        <div class="glow" aria-hidden="true"></div>
+        <div class="instruction" id="instruction" role="status">Drag mango into the bowl.</div>
+        <div id="ingredients" class="ingredients" aria-label="Ingredients"></div>
+        <button id="bowl" class="bowl" type="button" aria-label="Drop selected ingredient in bowl">
+          <span class="bowl-shadow"></span>
+          <span class="bowl-bottom"></span>
+          <span class="bowl-rim">
+            <span class="bowl-interior"></span>
+            <span class="contents" id="contents"></span>
+            <span class="drop-label" id="drop-label">DROP HERE</span>
+          </span>
+        </button>
+        <div class="cursor" id="cursor" hidden aria-hidden="true"></div>
+        <div class="result" id="result" hidden>
+          <p class="result-mark" aria-hidden="true">✦</p>
+          <h2 id="verdict" tabindex="-1">Chow ready!</h2>
+          <p id="result-copy"></p>
+          <button class="button button-gold" id="again" type="button">Make another bowl</button>
+        </div>
+      </div>
+      <div id="control-help" class="control-help">Drag ingredients or tap one, then tap the bowl.</div>
+    </section>
+    <aside class="recipe" aria-labelledby="order">
+      <div class="recipe-head">
+        <p class="kicker">THE ORDER</p>
+        <h2 id="order">Mango chow</h2>
+        <p class="order-text">A little heat. Keep it slight.</p>
+      </div>
+      <ul id="recipe-list" class="recipe-list"></ul>
+      <p class="recipe-note" id="recipe-note">One pepper is plenty for this order.</p>
+      <button class="button button-gold mix" id="mix" type="button" disabled>Shake bowl <span id="mix-count" aria-hidden="true">0 / 3</span></button>
+      <button class="button button-gold mix" id="serve" type="button" hidden>Serve chow <span aria-hidden="true">→</span></button>
+    </aside>
+  </div>
+</main>
+</body>
+</html>
