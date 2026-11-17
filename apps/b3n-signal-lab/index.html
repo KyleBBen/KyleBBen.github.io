@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="See how sound becomes digital samples.">
+<title>Signal Lab · Backyard Robotic</title>
+<link rel="stylesheet" href="style.css">
+<script src="app.js" defer></script>
+</head>
+<body>
+<main>
+<header><span class="brand"><i></i> BACKYARD ROBOTIC</span><span class="local">LOCAL AUDIO PROCESSING</span></header>
+<section class="intro">
+<h1>Signal Lab<span>.</span></h1>
+<p>See how sound becomes digital samples.</p>
+</section>
+<section class="panel controls" aria-label="Audio source and conversion">
+<div><h2>Audio input</h2><div class="buttons">
+<button id="record" class="primary">● &nbsp; Record microphone</button>
+<label class="button upload">Upload audio<input id="file" type="file" accept="audio/*,.wav,.mp3,.m4a,.ogg,.flac,.webm"></label>
+<button id="demo">Load demo tone</button>
+</div><p id="status" role="status">Demo tone loaded. Record up to 15 seconds or upload a clip up to 30 seconds.</p></div>
+<div class="settings">
+<label>Sample rate<select id="rate"><option value="8000">8 kHz</option><option value="16000">16 kHz</option><option value="44100" selected>44.1 kHz</option><option value="48000">48 kHz</option></select></label>
+<label>Bit depth<select id="bits"><option value="8">8-bit</option><option value="16" selected>16-bit</option></select></label>
+</div>
+</section>
+<section class="panel scope">
+<div class="section-head"><div><h2>Waveform</h2><span id="source" class="muted">Demo tone</span></div><span id="format" class="tag"></span></div>
+<div class="graph"><canvas id="wave" role="img" aria-label="Digital waveform, normalized amplitude over time"></canvas><span class="upper">+1</span><span class="lower">−1</span></div>
+<div class="timeline"><span id="left">0 ms</span><span id="right"></span></div>
+<div class="view"><label for="zoom">View</label><select id="zoom"><option value="all">Whole clip</option><option value="samples">Sample detail</option></select><label for="position" class="position-label" hidden>Position</label><input id="position" type="range" min="0" max="1000" value="0" aria-label="Position in waveform" hidden></div>
+</section>
+<section class="panel output">
+<div class="section-head"><div><h2>Digital output</h2><span id="summary" class="muted"></span></div><div class="buttons"><button id="wav">Download WAV</button><button id="csv">Download CSV</button></div></div>
+<audio id="play" controls aria-label="Play converted audio"></audio>
+<div class="table-wrap"><table><caption id="table-title">First six samples</caption><thead><tr><th scope="col">Sample</th><th scope="col">Time (ms)</th><th scope="col">PCM value</th><th scope="col">Stored bits</th></tr></thead><tbody id="samples"></tbody></table></div>
+</section>
+<footer>Sample rate sets how often we measure the wave. Bit depth sets how many amplitude values each measurement can store. Your microphone hardware captures the original signal.</footer>
+</main>
+</body>
+</html>
