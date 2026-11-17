@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en-TT">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Explore all 41 elected seats in Trinidad and Tobago’s House of Representatives, their MPs and the 2025 election results.">
+  <title>Red House Seats</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="data.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="masthead"><div class="wrap mast-inner">
+    <a class="brand" href="./"><svg aria-hidden="true" viewBox="0 0 36 34" fill="none"><path d="M3 13 18 4l15 9M5 15h26M7 28h22M3 31h30M10 17v9m8-9v9m8-9v9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Red House Seats</span></a>
+    <a class="mast-link" href="#sources">Sources</a>
+  </div></header>
+  <main class="wrap">
+    <section class="intro" aria-labelledby="page-title">
+      <p class="eyebrow">TRINIDAD &amp; TOBAGO <span aria-hidden="true">/</span> 13TH PARLIAMENT</p>
+      <h1 id="page-title">Who sits in the House?</h1>
+      <p class="lede">Explore all 41 elected seats in Trinidad and Tobago’s House of Representatives. Select a seat to meet the MP, see the 2025 result and find their constituency office.</p>
+    </section>
+    <section class="balance" aria-labelledby="balance-title">
+      <div class="balance-heading"><h2 id="balance-title">Party balance</h2><span>21 seats for a majority</span></div>
+      <div class="bar" id="balance-bar"></div>
+      <div class="legend" id="legend"></div>
+    </section>
+    <div class="workspace">
+      <section class="explorer card" aria-labelledby="explorer-title">
+        <div class="explorer-head">
+          <div><h2 id="explorer-title">Explore the House</h2><p id="layout-note">Illustrative seating · positions grouped by party</p></div>
+          <div class="switch" aria-label="Display mode"><button id="show-chamber" type="button" aria-pressed="true">Chamber</button><button id="show-list" type="button" aria-pressed="false">List</button></div>
+        </div>
+        <div class="search-row">
+          <label class="search"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><circle cx="10.5" cy="10.5" r="6.5" stroke="currentColor" stroke-width="1.7"/><path d="m16 16 4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg><input id="search" type="search" aria-label="Search by MP or constituency" placeholder="Search MP or constituency"></label>
+          <select id="party" aria-label="Filter by party"><option value="">All parties</option><option>UNC</option><option>PNM</option><option>TPP</option></select>
+        </div>
+        <p id="match-status" class="match-status" role="status" hidden></p>
+        <div id="chamber" class="chamber" aria-label="Illustrative House chamber">
+          <div class="dais" id="dais"></div>
+          <div class="benches">
+            <div id="unc-bench" class="bench"></div><div class="aisle" aria-hidden="true"></div>
+            <div class="bench"><div id="pnm-bench"></div><div id="tpp-bench"></div></div>
+          </div>
+        </div>
+        <div id="roster" class="roster" hidden></div>
+      </section>
+      <section class="details card" id="details" aria-label="Selected member" tabindex="-1"></section>
+    </div>
+    <footer id="sources">
+      <p><strong>About this chart.</strong> Seating positions are illustrative. The party balance uses the published House roster. Election margins show the difference in votes between first and second place in April 2025.</p>
+      <p>Roster checked 12 November 2026 · <a href="https://www.ttparliament.org/house/members/">Parliament’s member directory</a> · <a href="https://ebctt.com/wp-content/uploads/Parliamentary-Elections-2025-Report.pdf">EBC election report, Appendix IX</a></p>
+    </footer>
+  </main>
+</body>
+</html>
